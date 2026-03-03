@@ -5,7 +5,7 @@
  * Roundcube plugin to provide geolocation utilities.
  *
  * @version 0.1.2
- * @author Diana Soares
+ * @author Diana Soares, Ulrich Schwarz
  * @requires php-geoip
  *
  * Copyright (C) Diana Soares
@@ -123,9 +123,12 @@ class geolocation extends rcube_plugin
 		if(!$reader) break;
 		$rd = $reader->get($ip);
 		if(!$rd) break;
+        $langcode = $rcmail->config->get('language', 'en');
 		$geo = array(
-			'city' => utf8_encode($rd['city']['names']['en']),
-			'country' => utf8_encode($rd['country']['names']['en']));
+			'city' => $rd['city']['names'][$langcode],
+            'region' => $rd['subdivisions'][0]['names'][$langcode],
+			'country' => $rd['country']['names'][$langcode]
+        );
 	    }
 	    break;
 
